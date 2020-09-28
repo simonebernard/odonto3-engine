@@ -1,0 +1,180 @@
+<ion-header>
+  <ion-navbar>
+    <button ion-button menuToggle>
+      <ion-icon name="menu"></ion-icon>      
+    </button>
+    <ion-title>{{titoloHeader}}</ion-title>
+    <ion-buttons end>
+      <img *ngIf='visualizzastatini === false' ion-right src="assets/imgs/odonto3_header.png" class="navbarLogo" />
+      <button *ngIf='visualizzastatini !== false' ion-button large (click)="visualizzaListaStatini()">
+        Visualizza gli statini        
+      </button>
+      <ion-icon name="arrow-forward-sharp" ion-right ></ion-icon>
+
+  </ion-buttons>
+  </ion-navbar>
+</ion-header>
+
+
+<ion-content>
+
+  <ion-list *ngIf='profilo != 2'>
+    <ion-item>
+      <ion-label>Odontoiatra</ion-label>
+      <ion-select [(ngModel)]="medico" (ionChange)="getClienti()">
+        <ion-option *ngFor="let odo of odontoiatra" [value]="odo.cod_utente">{{odo.nome}} {{odo.cognome}} </ion-option>
+      </ion-select>
+    </ion-item>
+  </ion-list>
+
+  <ion-list *ngIf='modalita == "NEW"'>
+    <ion-item>
+      <ion-label>Paziente</ion-label>
+      <ionic-selectable 
+      #customerComponent
+      item-content 
+      searchPlaceholder="" 
+      [searchFailText]="'Nessun paziente trovato'" 
+      [(ngModel)]="paziente" 
+      itemValueField="cli_cod_cli" 
+      itemTextField="cognome_nome" 
+      [(items)]="clienti"
+      [canSearch]="true" 
+      [canClear]="true" 
+      [canAddItem]="true" 
+      [canSaveItem]="true" 
+      [canDeleteItem]="true" 
+      (onSearch)="searchPaziente($event)"
+      (onSearchFail)="onSearchFail($event)" 
+      (onSearchSuccess)="onSearchSuccess($event)"
+      (onAddItem)="onAddPaziente($event)"
+      (onSaveItem)="onSavePaziente($event)" 
+      (onChange)="onChangePaziente($event)">
+      <ng-template ionicSelectableItemTemplate let-cliente="item">        
+        <div id="{{cliente.cli_cod_cli}}" [ngStyle]="cliente.sesso=='M' && {'background-color':'#cdfff4'} || {'background-color': '#fcc7ff'}">
+            {{cliente.cognome_nome}} - {{cliente.data_nascita}}  - {{cliente.cli_cod_cli}}           
+        </div>
+      </ng-template>
+      <ng-template ionicSelectableAddItemTemplate let-cliente="item" let-isAdd="isAdd">
+				<form [formGroup]="newCustomerForm" novalidate>
+					<ion-list>
+            <ion-item-divider>{{isAdd ? 'Aggiungi' : 'Modifica'}} paziente</ion-item-divider>
+            <ion-item-divider *ngIf="isAdd">Nessun paziente trovato</ion-item-divider>
+						<ion-item>
+              <ion-label>Cognome</ion-label>
+              {{isAdd ? '' : item}}
+              <ion-input type="text" formControlName="sureName" autocorrect="off" autocapitalize="none">
+							</ion-input>
+            </ion-item>
+            <ion-item>
+							<ion-label>Nome</ion-label>
+							<ion-input type="text" formControlName="firstName" autocorrect="off" autocapitalize="none">
+							</ion-input>
+            </ion-item>
+            <ion-item>
+              <ion-label>Data di nascita</ion-label>
+              <ion-datetime formControlName="birthDate" display-format="MMMM YYYY"></ion-datetime>
+            </ion-item>
+            <ion-item>
+							<ion-label>Luogo di nascita</ion-label>
+							<ion-input type="text" formControlName="customerCity" autocorrect="off" autocapitalize="none">
+							</ion-input>
+            </ion-item>
+            <ion-item>
+                <ion-label>Sesso</ion-label>
+                <ion-select placeholder="Seleziona" formControlName="gender">
+                  <ion-option value="F">Femmina</ion-option>
+                  <ion-option value="M">Maschio</ion-option>
+                </ion-select>
+              </ion-item>
+					</ion-list>
+				</form>
+				<ion-footer>
+					<ion-toolbar>
+						<ion-row>
+							<ion-col col-6>
+								<button ion-button full no-margin (click)="customerComponent.hideAddItemTemplate()">
+                  Cancel
+                </button>
+              </ion-col>
+              <ion-col col-6>
+                <button ion-button full no-margin (click)="isAdd ? addPaziente() : savePaziente(port)" [disabled]="!newCustomerForm.valid">
+                  {{isAdd ? 'Add' : 'Save'}}
+                </button>
+              </ion-col>
+            </ion-row>
+          </ion-toolbar>
+        </ion-footer>
+      </ng-template>
+     </ionic-selectable>
+  </ion-item>
+  </ion-list>
+
+  <ion-list *ngIf='modalita == "EDIT"'>
+    <ion-card>
+      <ion-card-content>
+        <ion-card-title>          
+          {{editPaziente.nome_cli}} {{editPaziente.cognome_cli}}
+        </ion-card-title>
+        <p>
+          <ion-icon name="female" *ngIf='editPaziente.sesso=="F"'></ion-icon>
+          <ion-icon name="male" *ngIf='editPaziente.sesso=="M"'></ion-icon>        
+        </p>
+  
+      </ion-card-content>
+    </ion-card>
+  </ion-list>
+  
+  <ion-list>
+    <ion-grid id='griglia_denti' *ngFor="let p of bocca ; let i = index">
+      <ion-row *ngIf='p.sezione < 2 ' >
+        <ion-col *ngFor="let d of p.denti; let j = index;">            
+          <div class='{{d.classe}}'  (click)="openNavDetailsDenti(i,j,d)">
+            {{d.id}}
+            <img src='assets/imgs/{{d.id}}.png' /> 
+            <div id="background2"></div>
+            <div id="background3"></div>
+          </div>
+        </ion-col>
+      </ion-row>
+      <ion-row *ngIf='p.sezione > 1'>
+        <ion-col *ngFor="let d of p.denti ; let j = index">
+          <div class='{{d.classe}}' (click)="openNavDetailsDenti(i,j,d)">
+            {{d.id}}
+            <img src='assets/imgs/{{d.id}}.png' /> 
+            <div id="background2"></div>
+            <div id="background3"></div>
+          </div>
+        </ion-col>
+      </ion-row>
+    </ion-grid>
+  </ion-list>
+
+  <ion-list>
+    <ion-item *ngFor="let item of tipo_lavori; let i = index" (click)="openNavDetailsPage(item)">
+      <ion-icon [name]="item.icon" [ngStyle]="{'color': item.color}"></ion-icon>
+      {{ item.title }}
+
+      
+      <button ion-button item-end outline icon-start *ngIf="item.de !='' && item.du !=''||item.de !='' && item.du =='' && item.note !=''" [ngStyle]="{'color': 'green'}">
+        {{ visualizzaData(item.de) }}
+      </button>
+      <button ion-button item-end outline icon-end *ngIf="(item.de !='' &&  verificaDeDu(item)) || (item.du !='' &&  verificaDeDu(item)) " [ngStyle]="{'color': 'red'}">
+        {{ visualizzaData(item.du) }}
+      </button>
+      <ion-icon item-end name="ios-alert-outline" [ngStyle]="{'color': 'red'}" *ngIf="item.du =='' && item.note !=''"></ion-icon>
+    </ion-item>
+  </ion-list>
+
+  <ion-footer no-shadow>
+    <ion-row position="bottom" id='salvaStatinoButton'>
+      <ion-col width-50 text-center><button ion-button large (click)="annullaStatino()">Annulla</button></ion-col>
+      <ion-col width-50 text-center>
+        <button *ngIf='modalita ==  "NEW"' ion-button large (click)="saveStatino('NEW')" [disabled]="abilitaSalva > 0">Salva</button>
+        <button *ngIf='modalita == "EDIT"' ion-button large (click)="saveStatino('EDIT')">Modifica</button>
+      </ion-col>
+    </ion-row>
+  </ion-footer>
+
+
+</ion-content>

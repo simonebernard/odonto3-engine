@@ -1,0 +1,69 @@
+<ion-header>
+    <ion-navbar>
+      <ion-title>
+       {{titleHeader}}
+      </ion-title>
+    </ion-navbar>
+  </ion-header>
+  
+  <ion-content padding >
+    <div *ngIf='dataSet=="no_data"'>
+      <ion-item>
+        <ion-label>Paziente</ion-label>
+        <ionic-selectable 
+      #customerComponent
+      item-content 
+      searchPlaceholder="" 
+      [searchFailText]="'Nessun paziente trovato'" 
+      [(ngModel)]="paziente" 
+      itemValueField="cli_cod_cli" 
+      itemTextField="cognome_nome" 
+      [(items)]="clienti"
+      [canSearch]="true" 
+      [canClear]="false" 
+      [canAddItem]="false" 
+      [canSaveItem]="false" 
+      [canDeleteItem]="false" 
+      (onSearch)="searchPaziente($event)"
+      (onSearchFail)="onSearchFail($event)" 
+      (onSearchSuccess)="onSearchSuccess($event)"
+      (onChange)="onChangePaziente($event)">
+      <ng-template ionicSelectableItemTemplate let-cliente="item">        
+        <div id="{{cliente.cli_cod_cli}}" [ngStyle]="cliente.sesso=='M' && {'background-color':'#cdfff4'} || {'background-color': '#fcc7ff'}">
+            {{cliente.cognome_nome}} - {{cliente.data_nascita}}            
+        </div>
+      </ng-template>
+    </ionic-selectable>
+      </ion-item>
+    
+    <ion-item>
+      <ion-label>Data Entrata: dal</ion-label>
+      <ion-datetime displayFormat="DD MMM YYYY"   [(ngModel)]='startDate' ></ion-datetime>
+    </ion-item>
+  
+    <ion-item>
+      <ion-label>Data Uscita: al</ion-label>
+      <ion-datetime displayFormat="DD MMM YYYY" [(ngModel)]='endDate'></ion-datetime>
+    </ion-item>
+    <ion-row id='cercaStatinoButton'>
+      <button [disabled]="cli_cod_cli===undefined " ion-button block (click)="doCercaStatino('fromCercaStatino')" >
+        Cerca
+      </button>
+    </ion-row>    
+    </div>
+
+    <div *ngIf='dataSet!="no_data"'>   
+      <ion-list>
+          <ion-item *ngFor="let item of dataSet" (click)="openNavEditMainStatino(item)">
+              <ion-thumbnail item-left>
+                  <img src="assets/imgs/{{item.sesso}}.png">
+              </ion-thumbnail>
+              
+              <h2>{{ item.nome_cli }} {{ item.cognome_cli }} </h2>
+              <p> IN {{ item.DATA_TS_E  }} </p>
+              <p> OUT {{ item.DATA_TS_U  }} </p>
+              <p *ngIf='profilo!=2'> {{item.medico}} </p>              
+          </ion-item>
+      </ion-list>    
+  </div>
+  </ion-content>

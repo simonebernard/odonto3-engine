@@ -1,0 +1,72 @@
+<ion-header>
+  <ion-navbar>
+    <ion-title>
+      {{ item.title }}
+    </ion-title>
+    <!--
+          <ion-buttons end>
+        <button ion-button  (click)="openFotosPage(item.name,startDate,endDate)" >
+            <ion-icon item-start name="camera" ></ion-icon>
+          </button>
+    </ion-buttons>
+    -->
+  </ion-navbar>
+</ion-header>
+
+<ion-content padding>
+
+  <ion-item>
+    <ion-label>Data Entrata</ion-label>
+    <ion-datetime displayFormat="DD MMM YYYY" [(ngModel)]="item.de" name="{{ item.de }}" [(ngModel)]='startDate'  ></ion-datetime>
+  </ion-item>
+
+  <ion-item>
+    <ion-label>Data Uscita</ion-label>
+    <ion-datetime displayFormat="DD MMM YYYY" [(ngModel)]="item.du" name="{{ item.du }}" [(ngModel)]='endDate'></ion-datetime>
+  </ion-item>
+
+  <ion-item>
+    <ion-label stacked>Note</ion-label>
+    <ion-textarea type="text" rows="5"  [(ngModel)]="item.note" name='{{item.note}}' [(ngModel)]='description'></ion-textarea>
+  </ion-item>
+
+    <ion-label stacked>Fotos</ion-label>
+    <!--
+      
+    -->
+    <ion-grid>
+      <ion-row>
+        <ion-col col-6 *ngFor="let photo of photos; let id = index">
+          <ion-card class="block">
+            <ion-icon name="trash" class="deleteIcon" (click)="deletePhoto(id)"></ion-icon>
+            <img [src]="photo" *ngIf="photo" />
+          </ion-card>
+        </ion-col>
+      </ion-row>
+    </ion-grid>
+  
+    <ion-grid>
+      <ion-row>
+        <ion-col col-6 *ngFor="let image of images;">
+          <ion-card class="block">
+            <ion-icon name="trash" class="deleteIcon"></ion-icon>
+            <img src="data:image/png;base64,{{image}}" style="height: 200px;width:100px" />
+          </ion-card>
+        </ion-col>
+      </ion-row>
+    </ion-grid>
+   
+</ion-content>
+<ion-footer>
+
+
+    
+  <ion-row id='salvaStatinoButton'>
+    <ion-col width-100 text-center>      
+      <button ion-button full (click)="takePhoto(item)">
+        <ion-icon name="camera"></ion-icon>&nbsp;Fai una foto
+      </button>
+    </ion-col>
+</ion-row>
+
+</ion-footer>

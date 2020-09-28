@@ -1,0 +1,228 @@
+page-statino {
+    #griglia_denti {
+        text-align: center;
+        font-size: medium;        
+    }
+    body {
+        background-color: cyan;
+    }
+    .col {
+        padding: 0px;
+      
+    }
+    .grid {
+        padding: 0px;
+
+    }
+    .base {
+        background-color:#f6f6f6;      
+    }
+    #D18 {        
+            margin-top:264px; 
+            margin-left:36px;  
+                  
+    }
+    #D17 {        
+        margin-top:215px; 
+        margin-left:-12px;
+        
+              
+    }
+    #D16 {        
+        margin-top:160px; 
+        margin-left:-26px;
+       
+              
+    }
+    #D15 {        
+        margin-top:118px; 
+       margin-left:-30px;
+       
+              
+    }
+    #D14 {        
+        margin-top:80px; 
+       margin-left:-34px;
+         
+              
+    }
+    #D13 {        
+        margin-top:48px; 
+       margin-left:-38px;
+        
+              
+    }
+    #D12 {        
+        margin-top:26px; 
+       margin-left:-28px;
+        
+              
+    }
+    #D11 {        
+        margin-top:13px; 
+       margin-left:-15px;
+         
+              
+    }
+    #D21 {        
+        margin-top:13px; 
+       margin-left:0px;
+        
+              
+    }
+    #D22 {        
+        margin-top:26px; 
+        margin-right:0px;
+         
+              
+    }
+    #D23 {        
+        margin-top:48px;
+    }
+    #D24 {        
+        margin-top:80px;
+              
+    }
+    #D25 {        
+        margin-top:118px;   
+              
+    }
+    #D27 {        
+        margin-top:215px;    
+    }
+    #D26 {        
+        margin-top:160px;       
+    }
+    #D28 {        
+        margin-top: 264px;
+        margin-right: 44px;
+               
+    }
+ 
+
+    
+    
+    #background {
+        position: fixed;
+        top: 0px;
+        left: 0px;
+        width: 50%;
+        height: 100%;
+        background-color: pink;
+        z-index: 1;
+    }
+    
+    #content {
+        position: relative;
+        z-index: 2;
+        padding: 30px;
+        text-align: center;
+        font-weight: bold;
+        font-family: Arial, sans-serif;
+    }
+    
+  
+    .impianto {
+        background-color: #aa1a92;
+        color: whitesmoke ;
+        font-weight: bold ;
+    }
+    .moncone {
+        background-color:orange;
+        color: whitesmoke ;
+        font-weight: bold ;
+    }
+    .ponti {
+        background-color:red;
+        color: whitesmoke ;
+        font-weight: bold ;
+    }
+    .impianto_moncone {
+        background-color: #aa1a92; /* For browsers that do not support gradients */
+        background-image: linear-gradient(#aa1a92, orange);
+        color: whitesmoke ;
+        font-weight: bold ;
+    }
+    .impianto_moncone_ponti {
+        background-color: #aa1a92; /* For browsers that do not support gradients */
+        background-image: linear-gradient(#aa1a92, orange,red);
+        color: whitesmoke ;
+        font-weight: bold ;
+    }
+    .impianto_ponti {
+        background-color: #aa1a92; /* For browsers that do not support gradients */
+        background-image: linear-gradient(#aa1a92,red);
+        color: whitesmoke ;
+        font-weight: bold ;
+    }
+    .moncone_ponti {
+        background-color: orange; /* For browsers that do not support gradients */
+        background-image: linear-gradient( orange,red);
+        color: whitesmoke ;
+        font-weight: bold ;
+    }
+
+        
+    #female_icon {
+        background-image: url("../assets/imgs/Female.png") !important;
+    }
+    #male_icon {
+        background-image: url("../assets/imgs/Male.png") !important;
+    }
+
+    .alert-radio-icon{
+    border-radius: 0 !important;
+    border: none !important;
+    height: 40px !important;
+    width: 40px !important;
+    background-size: 40px 40px !important;
+    background-repeat: no-repeat ;
+}
+
+    [id^="alert-input-"][id$="-0"] .alert-radio-icon{
+        background-image: url("../assets/imgs/Male.png") !important;
+    }
+    [id^="alert-input-"][id$="-1"] .alert-radio-icon{
+        background-image: url("../assets/imgs/Female.png") !important;
+    }
+    .alert-radio-inner{
+        background-color: transparent !important;
+    }
+    img[usemap] {
+		border: none;
+		height: auto;
+		max-width: 100%;
+		width: auto;
+    }
+    #salvaStatinoButton  {
+        
+        button{
+            width: 100%;
+            background-color: green;
+        }
+        :first-child button {
+            background-color: red ;
+        }
+    }
+    #cercaStatinoButton  {
+        
+        button{
+            width: 100%;
+            background-color: green;
+        }        
+    }
+
+
+}
+edit-statino {
+    #input-ponti {
+        background-color: red;
+    }
+
+}
+
+.toolbar .searchbar-ios .searchbar-input {
+    background: rgb(255, 255, 255);
+    
+  }
+

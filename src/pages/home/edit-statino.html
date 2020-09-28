@@ -1,0 +1,65 @@
+<ion-header>
+        <ion-navbar>
+          <button ion-button menuToggle>
+            <ion-icon name="menu"></ion-icon>
+          </button>
+          <img ion-right src="assets/imgs/odonto3_header.png" class="navbarLogo" />
+          <ion-title> Edit Statino</ion-title>
+        </ion-navbar>
+      </ion-header>
+      
+      
+      <ion-content>
+            <ion-card >
+                    <ion-card-content>
+                      <ion-card-title>
+                        {{item.nome_cli}} {{item.cognome_cli}}
+                        </ion-card-title>                      
+                          <p> 
+                            <ion-icon name="female" *ngIf='item.sesso=="F"'></ion-icon>
+                            <ion-icon name="male" *ngIf='item.sesso=="M"'></ion-icon>
+                            {{ item.DATA_TS |  date:'dd/MM/yyyy' }}
+                          </p>
+                      
+                    </ion-card-content>
+            </ion-card>
+      
+            <ion-grid id='griglia_denti' *ngFor="let p of item.bocca ; let i = index">
+                <ion-row *ngIf='p.sezione < 3' > 
+                    <ion-col *ngFor="let d of p.denti ; let j = index" width-50 offset-25 (click)="openNavDetailsDenti(i,j,d)">
+                        <div class='{{d.classe}}'>
+                          {{d.id}}
+                          <div id="background2"></div>
+                          <div id="background3"></div>
+                        </div>                      
+                    </ion-col>
+                </ion-row>
+                <ion-row *ngIf='p.sezione > 2' > 
+                    <ion-col *ngFor="let d of p.denti ; let j = index" width-50 offset-25 (click)="openNavDetailsDenti(i,j,d)">
+                        <div class='{{d.classe}}'>
+                            {{d.id}} 
+                        </div>
+                    </ion-col>
+                </ion-row>
+            </ion-grid>
+                  
+            <ion-list>
+          <button ion-item *ngFor="let item of item.tipo_lavori" (click)="openNavDetailsPage(item)" icon-start>
+            <ion-icon [name]="item.icon" [ngStyle]="{'color': item.color}" item-start></ion-icon>
+            {{ item.title }}
+          </button>
+        </ion-list>
+        <ion-list>
+          <button ion-item (click)="openFotosPage(item)" icon-start>
+            <ion-icon name="photos" item-start></ion-icon>
+            Foto
+          </button>
+        </ion-list>
+        <ion-list>  
+          <button ion-button color="secondary" icon-end (click)="editStatino()">
+            <ion-icon name="save"></ion-icon>Modifica
+          </button>
+        </ion-list>
+      
+      
+      </ion-content>

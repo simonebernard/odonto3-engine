@@ -1,0 +1,50 @@
+<ion-header>
+  <ion-navbar>
+    <button ion-button menuToggle>
+      <ion-icon name="menu"></ion-icon>
+    </button>
+    <img ion-right src="assets/imgs/odonto3_header.png" class="navbarLogo" />
+    <ion-title>Home</ion-title>
+  </ion-navbar>
+</ion-header>
+
+<ion-content padding>
+  <h2>Benvenuto {{userDetails.name}}</h2>
+  <ion-card>
+    <img src="assets/imgs/TenichePosturometriche.png"/>
+    <ion-card-content>
+      <ion-card-title><b>Laboratorio Odontotecnico</b>        
+        </ion-card-title>
+      <p>
+        Bernard & Mosella.
+
+      </p>
+    </ion-card-content>
+  </ion-card>
+  <!--
+
+  
+    <h2 class="center">Lavori recenti </h2>
+
+    <div *ngIf='dataSet!=""'>   
+      <ion-list>
+          <ion-item *ngFor="let item of dataSet">
+              <ion-thumbnail item-left>
+                  <img src="assets/imgs/{{item.sesso}}.png">
+              </ion-thumbnail>
+              
+              <h2>{{ item.nome_cli }} {{ item.cognome_cli }} </h2>
+              <p> {{ item.DATA_TS |  date:'dd/MM/yyyy HH:mm' }} </p>
+              <p *ngIf='profilo!=2'> {{item.medico}} </p>
+              
+              <button clear item-right (click)="openNavEditStatino(item,'edit')" >Modifica</button>              
+          </ion-item>
+      </ion-list>    
+  </div>
+  <div *ngIf=' dataSet == "" '> <h3>Nessuno lavoro recente</h3> </div>
+
+  <ion-infinite-scroll (ionInfinite)="$event.waitFor(doInfinite())" *ngIf="!noRecords">
+    <ion-infinite-scroll-content></ion-infinite-scroll-content>
+  </ion-infinite-scroll>
+-->
+</ion-content>

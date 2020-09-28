@@ -1,0 +1,66 @@
+.navbarLogo{
+    height: 40px;
+    float:left;
+    margin-left:10px;
+}
+
+#griglia_denti {
+    text-align: center;
+    font-size: medium;
+}
+
+.base {
+    background-color: whitesmoke;        
+}
+.impianto {
+    background-color: #555555;
+    color: whitesmoke ;
+    font-weight: bold ;
+}
+.moncone {
+    background-color: orange;
+    color: whitesmoke ;
+    font-weight: bold ;
+}
+.ponti {
+    background-color: red;
+    color: whitesmoke ;
+    font-weight: bold ;
+}
+
+.impianto_moncone {
+    background-color: green;
+    color: whitesmoke ;
+    font-weight: bold ;
+}
+.impianto_moncone_ponti {
+    background-color: rgb(97, 6, 97);
+    color: whitesmoke ;
+    font-weight: bold ;
+}
+.impianto_ponti {
+    background-color: rgb(10, 10, 168);
+    color: whitesmoke ;
+    font-weight: bold ;
+}
+.moncone_ponti {
+    background-color: rgb(4, 97, 97);
+    color: whitesmoke ;
+    font-weight: bold ;
+}
+
+page-home {
+
+    .blue{
+        color:#006699;
+    }
+    #udpateBox{
+        textarea{
+            width:100%;
+        }
+    }
+        div#icona_maschio {    
+            background-color: mediumblue;
+            width: 150px;
+    }
+}
