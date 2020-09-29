@@ -150,16 +150,24 @@ function getUtEmail($cod_ut = "") {
 
 function getMaxStatino() {
 
+    $oggi = date("Ymd") ;
     $db = getDB();
-    $sql = " select MAX(cod_statino) as 'cod_statino' from STATINO" ;
+    //$sql = " select MAX(cod_statino) as 'cod_statino' from STATINO" ;
+    $sql  = "select MAX(cod_statino) as \"cod_statino\"," ;    
+    $sql .= "substr(MAX(cod_statino),1,8) as \"datamax\",";
+    $sql .= "substr(MAX(cod_statino),12) * 1 as \"maxvalue\" ";
+    //$sql .= "from STATINO having datamax = '".$oggi."'"
+    $sql .= "from STATINO having datamax = '20200930'";
+    error_log("getMaxStatino\n".$sql."\n",3,'/app/simmi.log') ;
     $stmt = $db->prepare($sql);        
     $stmt->execute();
-    $getMaxStatino = $stmt->fetch(PDO::FETCH_OBJ);
-    $tmp = explode('STA',$getMaxStatino->cod_statino);
-    $progressivo = $tmp[1] + 1 ;
-    $progressivo = str_pad($progressivo, 5, "0", STR_PAD_LEFT);    
-    $cod_statino = date("Ymd")."STA".$progressivo ;
-
+    $progressivo = 1 ;
+    if($stmt->rowCount()>0) {
+        $row = $stmt->fetch(PDO::FETCH_OBJ);
+        $progressivo = $progressivo + $row->maxvalue ;       
+    }
+    $progressivo = str_pad($progressivo, 5, "0", STR_PAD_LEFT);
+    $cod_statino = $oggi."STA".$progressivo ;
     return $cod_statino ;
 }
 
@@ -336,6 +344,7 @@ function salvaStatino() {
                     $note .= "\n".$noteDenti->inferiore ;
                     $note .= "\nData ingresso\t".$data_e ;
                     $note .= "\nData uscita\t".$pages_array[$i]->du ;
+                    $note .= "\nOra uscita\t".$pages_array[$i]->ou ;
                     $note .= "\n".$pages_array[$i]->note ;
                     $param['transparency'] = "transparent";
                     $param['visibility'] = "private" ;
@@ -366,8 +375,10 @@ function salvaStatino() {
                         $arr1 = $mg->CreateCalendarEvent($param,ID_GOOGLE_CALENDAR_IN) ;
 
                         $param['summary'] = "Uscita - ".$pages_array[$i]->title." - Dott. ".getMedici($cod_medico)." - Codice Lavoro. ". $cod_statino;
-                        $param['start']['dateTime'] = $value->du . "T". ORA_ALERT_CALENDAR_OUT ;
-                        $param['end']['dateTime'] = $value->du . "T". ORA_ALERT_CALENDAR_OUT ;
+                        //$param['start']['dateTime'] = $value->du . "T". ORA_ALERT_CALENDAR_OUT ;
+                        //$param['end']['dateTime'] = $value->du . "T". ORA_ALERT_CALENDAR_OUT ;
+                        $param['start']['dateTime'] = $value->du . "T". $value->ou ;
+                        $param['end']['dateTime'] = $value->du . "T". $value->ou ;
 
                         //$mg = new MyGoogle();
                         $arr2 = $mg->CreateCalendarEvent($param,ID_GOOGLE_CALENDAR_OUT) ;
@@ -407,11 +418,14 @@ function salvaStatino() {
                         $event = json_decode($getEventOut);
 
                         if ($event->description != $param['description']) $doUpdate = true ;
-                        if ($event->start->dateTime != $value->du . "T". ORA_ALERT_CALENDAR_OUT) $doUpdate = true ;
+                        //if ($event->start->dateTime != $value->du . "T". ORA_ALERT_CALENDAR_OUT) $doUpdate = true ;
+                        if ($event->start->dateTime != $value->du . "T". $value->ou) $doUpdate = true ;
                         if ($doUpdate) {
 
-                            $param['start']['dateTime'] = $value->du . "T". ORA_ALERT_CALENDAR_OUT ;
-                            $param['end']['dateTime'] = $value->du . "T". ORA_ALERT_CALENDAR_OUT ;
+                            //$param['start']['dateTime'] = $value->du . "T". ORA_ALERT_CALENDAR_OUT ;
+                            //$param['end']['dateTime'] = $value->du . "T". ORA_ALERT_CALENDAR_OUT ;
+                            $param['start']['dateTime'] = $value->du . "T". $value->ou ;
+                            $param['end']['dateTime'] = $value->du . "T". $value->ou ;
 
                             $updatedEvent = $mg->updateCalendarEvent(ID_GOOGLE_CALENDAR_OUT,$pages_array[$i]->id_google_event,$param);
 
@@ -578,8 +592,10 @@ function salvaStatinoOld() {
                 $arr1 = $mg->CreateCalendarEvent($param,ID_GOOGLE_CALENDAR_IN) ;
 
                 $param['summary'] = "Uscita - Dott. ".getMedici($cod_medico)." - Codice Lavoro. ". $cod_statino;
-                $param['start']['dateTime'] = $arr[du] . "T". ORA_ALERT_CALENDAR_OUT ;
-                $param['end']['dateTime'] = $arr[du] . "T". ORA_ALERT_CALENDAR_OUT ;
+                //$param['start']['dateTime'] = $arr[du] . "T". ORA_ALERT_CALENDAR_OUT ;
+                //$param['end']['dateTime'] = $arr[du] . "T". ORA_ALERT_CALENDAR_OUT ;
+                $param['start']['dateTime'] = $arr[du] . "T". $arr[ou] ;
+                $param['end']['dateTime'] = $arr[du] . "T". $arr[ou] ;
 
                 //$mg = new MyGoogle();
                 $arr2 = $mg->CreateCalendarEvent($param,ID_GOOGLE_CALENDAR_OUT) ;                
