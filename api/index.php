@@ -309,6 +309,7 @@ function salvaStatino() {
             $pages_array[$i]->name = $value->name;
             $pages_array[$i]->de = $value->de;
             $pages_array[$i]->du = $value->du;
+            $pages_array[$i]->ou = $value->ou;
             $pages_array[$i]->icon = $value->icon;
             $pages_array[$i]->note = $value->note;
             $pages_array[$i]->color = $value->color;
