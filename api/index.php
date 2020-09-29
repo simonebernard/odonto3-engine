@@ -216,14 +216,17 @@ function setMaxStatino() {
         //echo "<pre>" ; print_r($arr) ;
         $db = getDB();
         $db2 = getDB();
-        $sql = " select MAX(cod_statino) as 'cod_statino' from STATINO" ;
+
+        /*$sql = " select MAX(cod_statino) as 'cod_statino' from STATINO" ;
         $stmt = $db->prepare($sql);        
         $stmt->execute();
         $getMaxStatino = $stmt->fetch(PDO::FETCH_OBJ);
         $tmp = explode('STA',$getMaxStatino->cod_statino);
         $progressivo = $tmp[1] + 1 ;
         $progressivo = str_pad($progressivo, 5, "0", STR_PAD_LEFT);    
-        $cod_statino = date("Ymd")."STA".$progressivo ;
+        $cod_statino = date("Ymd")."STA".$progressivo ;*/
+        $cod_statino = getMaxStatino();
+
         $insert = "insert into STATINO (OWNER,LOWNER,cod_statino,id_google_event,cod_ut) values ('SYS','SYS','{$cod_statino}','TEMPORANEA','{$arr->cod_ut}')" ;
         //echo $insert ; die ;
         $stmt1 = $db2->prepare($insert);
