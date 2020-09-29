@@ -156,8 +156,7 @@ function getMaxStatino() {
     $sql  = "select MAX(cod_statino) as \"cod_statino\"," ;    
     $sql .= "substr(MAX(cod_statino),1,8) as \"datamax\",";
     $sql .= "substr(MAX(cod_statino),12) * 1 as \"maxvalue\" ";
-    //$sql .= "from STATINO having datamax = '".$oggi."'"
-    $sql .= "from STATINO having datamax = '20200930'";
+    $sql .= "from STATINO having datamax = '".$oggi."'"
     error_log("getMaxStatino\n".$sql."\n",3,'/app/simmi.log') ;
     $stmt = $db->prepare($sql);        
     $stmt->execute();
@@ -168,9 +167,7 @@ function getMaxStatino() {
         $progressivo = $progressivo + $row->maxvalue ;       
     }
     $progressivo = str_pad($progressivo, 5, "0", STR_PAD_LEFT);
-    //$cod_statino = $oggi."STA".$progressivo ;
-    $cod_statino = "20200930STA".$progressivo ;
-    error_log("rowCount: ".$stmt->rowCount()."\n",3,'/app/simmi.log') ;
+    $cod_statino = $oggi."STA".$progressivo ;
     return $cod_statino ;
 }
 
