@@ -156,7 +156,7 @@ function getMaxStatino() {
         $sql  = "select MAX(cod_statino) as \"cod_statino\"," ;    
         $sql .= "substr(MAX(cod_statino),1,8) as \"datamax\",";
         $sql .= "substr(MAX(cod_statino),12) * 1 as \"maxvalue\" ";
-        $sql .= "from STATINO having datamax = '".$oggi."'"
+        $sql .= "from STATINO having datamax = '".$oggi."'";
         error_log("getMaxStatino\n".$sql."\n",3,'/app/simmi.log') ;
         $stmt = $db->prepare($sql);        
         $stmt->execute();
