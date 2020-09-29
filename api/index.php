@@ -168,7 +168,9 @@ function getMaxStatino() {
         $progressivo = $progressivo + $row->maxvalue ;       
     }
     $progressivo = str_pad($progressivo, 5, "0", STR_PAD_LEFT);
-    $cod_statino = $oggi."STA".$progressivo ;
+    //$cod_statino = $oggi."STA".$progressivo ;
+    $cod_statino = "20200930STA".$progressivo ;
+    error_log("rowCount: ".$stmt->rowCount()."\n",3,'/app/simmi.log') ;
     return $cod_statino ;
 }
 
