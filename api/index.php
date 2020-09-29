@@ -162,6 +162,7 @@ function getMaxStatino() {
     $stmt = $db->prepare($sql);        
     $stmt->execute();
     $progressivo = 1 ;
+    error_log("rowCount: ".$stmt->rowCount()."\n",3,'/app/simmi.log') ;
     if($stmt->rowCount()>0) {
         $row = $stmt->fetch(PDO::FETCH_OBJ);
         $progressivo = $progressivo + $row->maxvalue ;       
