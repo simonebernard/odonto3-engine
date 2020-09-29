@@ -304,7 +304,6 @@ function salvaStatino() {
         $i=0;
         $id_google_events = "";
         foreach ($lavori as $key => $value) {
-            error_log("".print_r($value,true)."\n",3,'/app/simmi.log') ;
             $pages_array[$i]->title = $value->title;
             $pages_array[$i]->name = $value->name;
             $pages_array[$i]->de = $value->de;
@@ -376,9 +375,9 @@ function salvaStatino() {
                         $param['summary'] = "Uscita - ".$pages_array[$i]->title." - Dott. ".getMedici($cod_medico)." - Codice Lavoro. ". $cod_statino;
                         //$param['start']['dateTime'] = $value->du . "T". ORA_ALERT_CALENDAR_OUT ;
                         //$param['end']['dateTime'] = $value->du . "T". ORA_ALERT_CALENDAR_OUT ;
-                        $param['start']['dateTime'] = $value->du . "T". $value->ou ;
-                        $param['end']['dateTime'] = $value->du . "T". $value->ou ;
-
+                        $param['start']['dateTime'] = $value->du . "T". $value->ou . ":00" ;
+                        $param['end']['dateTime'] = $value->du . "T". $value->ou . ":00" ;
+                        error_log("".print_r($value,true)."\n",3,'/app/simmi.log') ;
                         //$mg = new MyGoogle();
                         $arr2 = $mg->CreateCalendarEvent($param,ID_GOOGLE_CALENDAR_OUT) ;
 
