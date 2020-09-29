@@ -149,6 +149,7 @@ function getUtEmail($cod_ut = "") {
 }
 
 function getMaxStatino() {
+    $cod_statino = "";
     try {
         $oggi = date("Ymd") ;
         $db = getDB();
@@ -218,6 +219,9 @@ function setMaxStatino() {
         $db = getDB();
         $db2 = getDB();
         $cod_statino = getMaxStatino();
+        if ($cod_statino=="") {
+            echo '{"status":"KO","msg": "Errore nella generazione dello statino."}';
+        }
         $insert = "insert into STATINO (OWNER,LOWNER,cod_statino,id_google_event,cod_ut) values ('SYS','SYS','{$cod_statino}','TEMPORANEA','{$arr->cod_ut}')" ;        
         $stmt1 = $db2->prepare($insert);
         $stmt1->execute();
