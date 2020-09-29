@@ -149,26 +149,28 @@ function getUtEmail($cod_ut = "") {
 }
 
 function getMaxStatino() {
-
-    $oggi = date("Ymd") ;
-    $db = getDB();
-    //$sql = " select MAX(cod_statino) as 'cod_statino' from STATINO" ;
-    $sql  = "select MAX(cod_statino) as \"cod_statino\"," ;    
-    $sql .= "substr(MAX(cod_statino),1,8) as \"datamax\",";
-    $sql .= "substr(MAX(cod_statino),12) * 1 as \"maxvalue\" ";
-    $sql .= "from STATINO having datamax = '".$oggi."'"
-    error_log("getMaxStatino\n".$sql."\n",3,'/app/simmi.log') ;
-    $stmt = $db->prepare($sql);        
-    $stmt->execute();
-    $progressivo = 1 ;
-    error_log("rowCount: ".$stmt->rowCount()."\n",3,'/app/simmi.log') ;
-    if($stmt->rowCount()>0) {
-        $row = $stmt->fetch(PDO::FETCH_OBJ);
-        $progressivo = $progressivo + $row->maxvalue ;       
+    try {
+        $oggi = date("Ymd") ;
+        $db = getDB();
+        $sql  = "select MAX(cod_statino) as \"cod_statino\"," ;    
+        $sql .= "substr(MAX(cod_statino),1,8) as \"datamax\",";
+        $sql .= "substr(MAX(cod_statino),12) * 1 as \"maxvalue\" ";
+        $sql .= "from STATINO having datamax = '".$oggi."'"
+        error_log("getMaxStatino\n".$sql."\n",3,'/app/simmi.log') ;
+        $stmt = $db->prepare($sql);        
+        $stmt->execute();
+        $progressivo = 1 ;
+        error_log("rowCount: ".$stmt->rowCount()."\n",3,'/app/simmi.log') ;
+        if($stmt->rowCount()>0) {
+            $row = $stmt->fetch(PDO::FETCH_OBJ);
+            $progressivo = $progressivo + $row->maxvalue ;       
+        }
+        $progressivo = str_pad($progressivo, 5, "0", STR_PAD_LEFT);
+        $cod_statino = $oggi."STA".$progressivo ;        
+    } catch (\Throwable $th) {
+        error_log("getMaxStatino: Error \n".$th."\n",3,'/app/simmi.log') ;
     }
-    $progressivo = str_pad($progressivo, 5, "0", STR_PAD_LEFT);
-    $cod_statino = $oggi."STA".$progressivo ;
-    return $cod_statino ;
+    return $cod_statino ;  
 }
 
 function getNextCodUt($end) {
@@ -213,28 +215,15 @@ function setMaxStatino() {
     try {
         $request = \Slim\Slim::getInstance()->request();
         $arr = json_decode($request->getBody());
-        //echo "<pre>" ; print_r($arr) ;
         $db = getDB();
         $db2 = getDB();
-
-        /*$sql = " select MAX(cod_statino) as 'cod_statino' from STATINO" ;
-        $stmt = $db->prepare($sql);        
-        $stmt->execute();
-        $getMaxStatino = $stmt->fetch(PDO::FETCH_OBJ);
-        $tmp = explode('STA',$getMaxStatino->cod_statino);
-        $progressivo = $tmp[1] + 1 ;
-        $progressivo = str_pad($progressivo, 5, "0", STR_PAD_LEFT);    
-        $cod_statino = date("Ymd")."STA".$progressivo ;*/
         $cod_statino = getMaxStatino();
-
-        $insert = "insert into STATINO (OWNER,LOWNER,cod_statino,id_google_event,cod_ut) values ('SYS','SYS','{$cod_statino}','TEMPORANEA','{$arr->cod_ut}')" ;
-        //echo $insert ; die ;
+        $insert = "insert into STATINO (OWNER,LOWNER,cod_statino,id_google_event,cod_ut) values ('SYS','SYS','{$cod_statino}','TEMPORANEA','{$arr->cod_ut}')" ;        
         $stmt1 = $db2->prepare($insert);
         $stmt1->execute();
         $id_google_folder = getIdFolderFromDrive($cod_statino) ;
         echo '{"status":"OK","cod_statino": "'.$cod_statino.'","id_google_folder":"'.$id_google_folder.'"}';
     } catch (\Throwable $th) {
-        //throw $th;
         echo '{"status":"KO","msg": "'.$th.'"}';
 
     }    
