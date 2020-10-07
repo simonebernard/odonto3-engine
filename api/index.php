@@ -372,9 +372,7 @@ function salvaStatino() {
                         //Creo un nuovo Item in calendar
                         $arr1 = $mg->CreateCalendarEvent($param,ID_GOOGLE_CALENDAR_IN) ;
 
-                        $param['summary'] = "Uscita - ".$pages_array[$i]->title." - Dott. ".getMedici($cod_medico)." - Codice Lavoro. ". $cod_statino;
-                        //$param['start']['dateTime'] = $value->du . "T". ORA_ALERT_CALENDAR_OUT ;
-                        //$param['end']['dateTime'] = $value->du . "T". ORA_ALERT_CALENDAR_OUT ;
+                        $param['summary'] = "Uscita - ".$pages_array[$i]->title." - Dott. ".getMedici($cod_medico)." - Codice Lavoro. ". $cod_statino;                        
                         $param['start']['dateTime'] = $value->du . "T". $value->ou . ":00" ;
                         $param['end']['dateTime'] = $value->du . "T". $value->ou . ":00" ;
                         error_log("".print_r($value,true)."\n",3,'/app/simmi.log') ;
@@ -416,15 +414,12 @@ function salvaStatino() {
                         $event = json_decode($getEventOut);
 
                         if ($event->description != $param['description']) $doUpdate = true ;
-                        //if ($event->start->dateTime != $value->du . "T". ORA_ALERT_CALENDAR_OUT) $doUpdate = true ;
-                        if ($event->start->dateTime != $value->du . "T". $value->ou) $doUpdate = true ;
+                        if ($event->start->dateTime != $value->du . "T". $value->ou .":00") $doUpdate = true ;
                         if ($doUpdate) {
-
-                            //$param['start']['dateTime'] = $value->du . "T". ORA_ALERT_CALENDAR_OUT ;
-                            //$param['end']['dateTime'] = $value->du . "T". ORA_ALERT_CALENDAR_OUT ;
-                            $param['start']['dateTime'] = $value->du . "T". $value->ou ;
-                            $param['end']['dateTime'] = $value->du . "T". $value->ou ;
-
+                            error_log( "1 param = ".json_encode($param)."\n",3,'/app/simmi.log') ;
+                            $param['start']['dateTime'] = $value->du . "T". $value->ou .":00" ;
+                            $param['end']['dateTime'] = $value->du . "T". $value->ou .":00" ;
+                            error_log( "2 param = ".json_encode($param)."\n",3,'/app/simmi.log') ;
                             $updatedEvent = $mg->updateCalendarEvent(ID_GOOGLE_CALENDAR_OUT,$pages_array[$i]->id_google_event,$param);
 
                         } else {
@@ -590,8 +585,7 @@ function salvaStatinoOld() {
                 $arr1 = $mg->CreateCalendarEvent($param,ID_GOOGLE_CALENDAR_IN) ;
 
                 $param['summary'] = "Uscita - Dott. ".getMedici($cod_medico)." - Codice Lavoro. ". $cod_statino;
-                //$param['start']['dateTime'] = $arr[du] . "T". ORA_ALERT_CALENDAR_OUT ;
-                //$param['end']['dateTime'] = $arr[du] . "T". ORA_ALERT_CALENDAR_OUT ;
+                
                 $param['start']['dateTime'] = $arr[du] . "T". $arr[ou] ;
                 $param['end']['dateTime'] = $arr[du] . "T". $arr[ou] ;
 
