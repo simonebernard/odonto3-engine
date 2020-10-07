@@ -586,8 +586,8 @@ function salvaStatinoOld() {
 
                 $param['summary'] = "Uscita - Dott. ".getMedici($cod_medico)." - Codice Lavoro. ". $cod_statino;
                 
-                $param['start']['dateTime'] = $arr[du] . "T". $arr[ou] ;
-                $param['end']['dateTime'] = $arr[du] . "T". $arr[ou] ;
+                $param['start']['dateTime'] = $arr[du] . "T". $arr[ou].":00" ;
+                $param['end']['dateTime'] = $arr[du] . "T". $arr[ou].":00" ;
 
                 //$mg = new MyGoogle();
                 $arr2 = $mg->CreateCalendarEvent($param,ID_GOOGLE_CALENDAR_OUT) ;                
