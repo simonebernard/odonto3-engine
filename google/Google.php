@@ -128,6 +128,7 @@ class MyGoogle {
     }   
     function createForldersOnDrive($cod_statino) {
         try {
+            error_log("createForldersOnDrive: {$cod_statino}\n",3,'/app/simmi.log') ;
             $root_folder = "1oPIxGKH9PTOh_np0kKzp5H1AblvQI8iE";
             $clientDrive = $this->getClientDrive();  
             //$clientDrive =   $this->cliD;
@@ -142,8 +143,7 @@ class MyGoogle {
 
             $fileMetadata->setName($cod_statino);
 
-            $folder = $driveService->files->create($fileMetadata, array(            
-                'fields' => 'id'));
+            $folder = $driveService->files->create($fileMetadata, array('fields' => 'id'));
 
             error_log("Folder ID: ". $folder->id. "\n",3,'/app/simmi.log') ;
             return $folder->id ;
@@ -223,6 +223,7 @@ class MyGoogle {
             if (!file_exists(dirname($tokenPath))) {
                 mkdir(dirname($tokenPath), 0700, true);
             }
+            error_log(" Refreshed Token: ".json_encode($client->getAccessToken())."  \n",3,'/app/simmi.log') ;
             file_put_contents($tokenPath, json_encode($client->getAccessToken()));
         }
         return $client;
