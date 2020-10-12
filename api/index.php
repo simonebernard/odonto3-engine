@@ -303,6 +303,7 @@ function salvaStatino() {
         $i=0;
         $id_google_events = "";
         foreach ($lavori as $key => $value) {
+            error_log("{$key}".print_r($value,true)."]\n",3,'/app/simmi.log') ;
             $pages_array[$i]->title = $value->title;
             $pages_array[$i]->name = $value->name;
             $pages_array[$i]->de = $value->de;
@@ -313,10 +314,9 @@ function salvaStatino() {
             $pages_array[$i]->color = $value->color;
             $pages_array[$i]->id_google_event = $value->id_google_event;
             
-            error_log("[".$value->cod_statino. "][".$value->title."]\n",3,'/app/simmi.log') ;
-            error_log("de[".$value->de. "] du[".$value->du."]\n",3,'/app/simmi.log') ;
-
+            error_log("[".$cod_statino. "][".$value->title."]\n",3,'/app/simmi.log') ;
             if ($value->de != '' && $value->du != '') {
+                error_log("Data entrata ".$value->de. "\nData uscita ".$value->du."\n",3,'/app/simmi.log') ;
                 $data_entrata   = $value->de ;        
                 $data_uscita    = $value->du ;
                 $data_entrata_db = explode("T",$data_entrata) ;            
