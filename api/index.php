@@ -276,11 +276,10 @@ function editStatino () {
 
 }
 function salvaStatino() {
-    try {
-    
+    try {        
         $request = \Slim\Slim::getInstance()->request();
         $arr = json_decode($request->getBody());
-
+        error_log("salvaStatino:\nSTART ARR######################################\n".print_r($arr,true)."\nEND######################################",3,'/app/simmi.log') ;
         $lavori      = $arr[1] ;
         $bocca       = json_encode($arr[0]) ;    
         $paziente    = $arr[2] ; 
