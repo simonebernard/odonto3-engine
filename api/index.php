@@ -303,16 +303,16 @@ function salvaStatino() {
         $i=0;
         $id_google_events = "";
         foreach ($lavori as $key => $value) {
-            error_log("{$key}".print_r($value,true)."]\n",3,'/app/simmi.log') ;
-            $pages_array[$i]->title = $value->title;
-            $pages_array[$i]->name = $value->name;
-            $pages_array[$i]->de = $value->de;
-            $pages_array[$i]->du = $value->du;
-            $pages_array[$i]->ou = $value->ou;
-            $pages_array[$i]->icon = $value->icon;
-            $pages_array[$i]->note = $value->note;
-            $pages_array[$i]->color = $value->color;
-            $pages_array[$i]->id_google_event = $value->id_google_event;
+            error_log("\n{$key}-".print_r($value,true)."]\n",3,'/app/simmi.log') ;
+            $pages_array[$key]->title = $value->title;
+            $pages_array[$key]->name = $value->name;
+            $pages_array[$key]->de = $value->de;
+            $pages_array[$key]->du = $value->du;
+            $pages_array[$key]->ou = $value->ou;
+            $pages_array[$key]->icon = $value->icon;
+            $pages_array[$key]->note = $value->note;
+            $pages_array[$key]->color = $value->color;
+            $pages_array[$key]->id_google_event = $value->id_google_event;
             
             error_log("[".$cod_statino. "][".$value->title."]\n",3,'/app/simmi.log') ;
             if ($value->de != '' && $value->du != '') {
@@ -336,16 +336,16 @@ function salvaStatino() {
                     //$note .= "Dottor\t".getMedici($cod_medico)." \nPaziente\t".getClienti($cod_cli,$cod_medico)  ;
                     $note = "Dottor\t".getMedici($cod_medico)." \n" ;              
 
-                    $note .= "\nTipo di Lavoro:\t".$pages_array[$i]->title ;
+                    $note .= "\nTipo di Lavoro:\t".$pages_array[$key]->title ;
                     $note .= "\n".$noteDenti->superiore ;
                     $note .= "\n".$noteDenti->inferiore ;
                     $note .= "\nData ingresso\t".$data_e ;
-                    $note .= "\nData uscita\t".$pages_array[$i]->du ;
-                    $note .= "\nOra uscita\t".$pages_array[$i]->ou ;
-                    $note .= "\n".$pages_array[$i]->note ;
+                    $note .= "\nData uscita\t".$pages_array[$key]->du ;
+                    $note .= "\nOra uscita\t".$pages_array[$key]->ou ;
+                    $note .= "\n".$pages_array[$key]->note ;
                     $param['transparency'] = "transparent";
                     $param['visibility'] = "private" ;
-                    $param['summary'] = "Ingresso - ".$pages_array[$i]->title." - Dott. ".getMedici($cod_medico)." - Codice Lavoro. ". $cod_statino;
+                    $param['summary'] = "Ingresso - ".$pages_array[$key]->title." - Dott. ".getMedici($cod_medico)." - Codice Lavoro. ". $cod_statino;
                     $param['location'] = "Napoli NA, Italia" ;
                     $param['description'] = $note;
                     $param['start'] = array();
@@ -366,24 +366,24 @@ function salvaStatino() {
                         array('method' => 'popup', 'minutes' => 1)
                         ) ;
                     $mg = new MyGoogle();
-                    error_log("id_google_event = ".$pages_array[$i]->id_google_event."\n",3,'/app/simmi.log') ;
-                    if($pages_array[$i]->id_google_event=='') {
+                    error_log("id_google_event = ".$pages_array[$key]->id_google_event."\n",3,'/app/simmi.log') ;
+                    if($pages_array[$key]->id_google_event=='') {
                         //Creo un nuovo Item in calendar
                         $arr1 = $mg->CreateCalendarEvent($param,ID_GOOGLE_CALENDAR_IN) ;
 
-                        $param['summary'] = "Uscita - ".$pages_array[$i]->title." - Dott. ".getMedici($cod_medico)." - Codice Lavoro. ". $cod_statino;                        
+                        $param['summary'] = "Uscita - ".$pages_array[$key]->title." - Dott. ".getMedici($cod_medico)." - Codice Lavoro. ". $cod_statino;                        
                         $param['start']['dateTime'] = $value->du . "T". $value->ou . ":00" ;
                         $param['end']['dateTime'] = $value->du . "T". $value->ou . ":00" ;
                         error_log("".print_r($value,true)."\n",3,'/app/simmi.log') ;
                         //$mg = new MyGoogle();
                         $arr2 = $mg->CreateCalendarEvent($param,ID_GOOGLE_CALENDAR_OUT) ;
 
-                        $pages_array[$i]->id_google_event = $arr2['id'] ;
+                        $pages_array[$key]->id_google_event = $arr2['id'] ;
                         $id_google_events = $id_google_events . "," .$arr2['id'];
                         
                         $sql  = "select id_google_drive from imagesdata where 1>0 ";
                         $sql .= "and cod_statino = '{$cod_statino}' ";
-                        $sql .= "and tipolavoro = '{$pages_array[$i]->name}' " ;
+                        $sql .= "and tipolavoro = '{$pages_array[$key]->name}' " ;
                         error_log('2)QUERY: '.$sql . "\n",3,'/app/simmi.log') ; 
                         $stmt3 = $db->prepare($sql);            
                         $stmt3->execute();
@@ -408,7 +408,7 @@ function salvaStatino() {
                         //modifico l'evento sul google calendar
                         $doUpdate = false ;
                         error_log("Prelevo le info da google e lo aggiorno \n",3,'/app/simmi.log') ;
-                        $getEventOut = $mg->getCalendarEvent(ID_GOOGLE_CALENDAR_OUT,$pages_array[$i]->id_google_event) ;
+                        $getEventOut = $mg->getCalendarEvent(ID_GOOGLE_CALENDAR_OUT,$pages_array[$key]->id_google_event) ;
                         error_log( "ret getCalendarEvent = ".print_r($getEventOut,true)  . "\n",3,'/app/simmi.log') ;
                         $event = json_decode($getEventOut);
 
@@ -419,10 +419,10 @@ function salvaStatino() {
                             $param['start']['dateTime'] = $value->du . "T". $value->ou .":00" ;
                             $param['end']['dateTime'] = $value->du . "T". $value->ou .":00" ;
                             error_log( "2 param = ".json_encode($param)."\n",3,'/app/simmi.log') ;
-                            $updatedEvent = $mg->updateCalendarEvent(ID_GOOGLE_CALENDAR_OUT,$pages_array[$i]->id_google_event,$param);
+                            $updatedEvent = $mg->updateCalendarEvent(ID_GOOGLE_CALENDAR_OUT,$pages_array[$key]->id_google_event,$param);
 
                         } else {
-                            error_log("Nulla d'aggiornare per l'evento ".$pages_array[$i]->id_google_event."\n",3,'/app/simmi.log') ;
+                            error_log("Nulla d'aggiornare per l'evento ".$pages_array[$key]->id_google_event."\n",3,'/app/simmi.log') ;
 
                         }
                     }                
